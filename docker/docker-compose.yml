@@ -1,8 +1,22 @@
 services:
   web:
     build: .
-    command: bash -c "rails new . --minimal --skip-git --force && rails server -b 0.0.0.0"
+    command: bash -c "rails new . --force --database=postgresql --skip-test && rails server -b 0.0.0.0"
     volumes:
-      - .:/app
+      - ../:/app
     ports:
-      - "3000:3000"
+      - "3001:3000"
+    depends_on:
+      - db
+    environment:
+      DATABASE_URL: postgres://postgres:password@db
+  
+  db:
+    image: postgres:13
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_PASSWORD: password
+
+volumes:
+  postgres_data:
