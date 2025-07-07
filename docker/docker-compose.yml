@@ -1,0 +1,8 @@
+services:
+  web:
+    build: .
+    command: bash -c "rails new . --minimal --skip-git --force && rails server -b 0.0.0.0"
+    volumes:
+      - .:/app
+    ports:
+      - "3000:3000"
