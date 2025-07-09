@@ -1,5 +1,10 @@
-FROM ruby:3.1
+
+FROM ruby:3.4.4
 WORKDIR /app
+
+COPY Gemfile Gemfile.lock ./
+RUN bundle install
+
 COPY . .
-RUN gem install rails
-CMD ["rails", "server", "-b", "0.0.0.0"]
+
+CMD ["bundle", "exec", "rails", "server", "-b", "0.0.0.0"]

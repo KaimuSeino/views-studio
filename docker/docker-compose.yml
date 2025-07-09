@@ -1,8 +1,24 @@
+version: "3.9"
+
 services:
   web:
-    build: .
-    command: bash -c "rails new . --minimal --skip-git --force && rails server -b 0.0.0.0"
+    build:
+      context: ..
+      dockerfile: docker/Dockerfile
+    command: bundle exec rails server -b 0.0.0.0 
     volumes:
-      - .:/app
+      - ../:/app
     ports:
-      - "3000:3000"
+      - "3000:3000"    
+    depends_on: [db]
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+volumes:
+  db-data:
